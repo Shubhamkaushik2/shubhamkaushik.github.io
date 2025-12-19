@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shubham Kaushik - Travel Photographer & Videographer</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lightbox CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #E1306C;
+            --secondary-color: #333;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--secondary-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Admin Panel Button */
+        .admin-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            z-index: 1000;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .admin-btn:hover {
+            transform: scale(1.1);
+            background: #C13584;
+        }
+        
+        /* Admin Panel Modal */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .admin-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .close-admin {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .admin-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .admin-tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .admin-section {
+            display: none;
+        }
+        
+        .admin-section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            background: #C13584;
+        }
+        
+        .btn-secondary {
+            background: #666;
+        }
+        
+        .btn-secondary:hover {
+            background: #555;
+        }
+        
+        .image-preview {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Hero Section */
+        header {
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1.5s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            font-size: 1.2rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(225, 48, 108, 0.3);
+        }
+        
+        .cta-button:hover {
+            background: #C13584;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(225, 48, 108, 0.4);
+        }
+        
+        /* Sections */
+        section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 4px;
+            background: var(--primary-color);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 250px;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Videos */
+        .videos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .video-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(225, 48, 108, 0.8);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .video-info {
+            padding: 20px;
+        }
+        
+        /* Templates */
+        .templates-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .template-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .template-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .template-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .template-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .template-content {
+            padding: 25px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .download-btn:hover {
+            background: var(--primary-color);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 70px 0 30px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .social-icons a:hover {
+            background: var(--primary-color);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* Contact Info */
+        .contact-info {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .contact-info p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .contact-info a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.3rem; }
+            .hero-tagline { font-size: 1.3rem; }
+            .stats { flex-direction: column; gap: 20px; }
+            .section-title h2 { font-size: 2rem; }
+            section { padding: 70px 0; }
+            .nav-links { display: none; }
+        }
+        
+        @media (max-width: 576px) {
+            h1 { font-size: 2rem; }
+            .hero-tagline { font-size: 1.1rem; }
+            .section-title h2 { font-size: 1.8rem; }
+            .admin-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Panel Button -->
+    <div class="admin-btn" id="adminBtn">
+        <i class="fas fa-cog"></i>
+    </div>
+    
+    <!-- Admin Panel Modal -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-content">
+            <div class="close-admin" id="closeAdmin">&times;</div>
+            <h2>Website Admin Panel</h2>
+            <p>Update your website content here (Password: admin123)</p>
+            
+            <div class="admin-tabs">
+                <div class="admin-tab active" data-tab="home">Home</div>
+                <div class="admin-tab" data-tab="gallery">Gallery</div>
+                <div class="admin-tab" data-tab="videos">Videos</div>
+                <div class="admin-tab" data-tab="templates">Templates</div>
+                <div class="admin-tab" data-tab="contact">Contact</div>
+                <div class="admin-tab" data-tab="backup">Backup</div>
+            </div>
+            
+            <!-- Home Tab -->
+            <div class="admin-section active" id="home-tab">
+                <div class="form-group">
+                    <label for="heroTitle">Hero Title</label>
+                    <input type="text" id="heroTitle" class="form-control" value="Shubham Kaushik">
+                </div>
+                <div class="form-group">
+                    <label for="heroTagline">Hero Tagline</label>
+                    <input type="text" id="heroTagline" class="form-control" value="Travel Photographer & Videographer">
+                </div>
+                <div class="form-group">
+                    <label for="heroImage">Hero Background Image (URL)</label>
+                    <input type="text" id="heroImage" class="form-control" placeholder="Enter image URL">
+                    <img id="heroPreview" class="image-preview" src="" alt="Preview">
+                </div>
+                <div class="form-group">
+                    <label for="followers">Followers Count</label>
+                    <input type="text" id="followers" class="form-control" value="400+">
+                </div>
+                <div class="form-group">
+                    <label for="views">Views Count</label>
+                    <input type="text" id="views" class="form-control" value="7K+">
+                </div>
+                <button class="btn" onclick="saveHomeContent()">Save Home Content</button>
+            </div>
+            
+            <!-- Gallery Tab -->
+            <div class="admin-section" id="gallery-tab">
+                <h3>Add New Photo</h3>
+                <div class="form-group">
+                    <label for="photoUrl">Photo URL</label>
+                    <input type="text" id="photoUrl" class="form-control" placeholder="Enter image URL">
+                </div>
+                <div class="form-group">
+                    <label for="photoAlt">Photo Description</label>
+                    <input type="text" id="photoAlt" class="form-control" placeholder="Enter description">
+                </div>
+                <button class="btn" onclick="addPhoto()">Add Photo</button>
+                
+                <h3 style="margin-top: 30px;">Current Photos</h3>
+                <div id="currentPhotos"></div>
+            </div>
+            
+            <!-- Videos Tab -->
+            <div class="admin-section" id="videos-tab">
+                <h3>Add New Video</h3>
+                <div class="form-group">
+                    <label for="videoThumbnail">Video Thumbnail URL</label>
+                    <input type="text" id="videoThumbnail" class="form-control" placeholder="Enter thumbnail URL">
+                </div>
+                <div class="form-group">
+                    <label for="videoTitle">Video Title</label>
+                    <input type="text" id="videoTitle" class="form-control" placeholder="Enter video title">
+                </div>
+                <div class="form-group">
+                    <label for="videoDescription">Video Description</label>
+                    <textarea id="videoDescription" class="form-control" placeholder="Enter video description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="videoLink">Instagram Reel Link</label>
+                    <input type="text" id="videoLink" class="form-control" placeholder="Enter Instagram reel URL">
+                </div>
+                <button class="btn" onclick="addVideo()">Add Video</button>
+                
+                <h3 style="margin-top: 30px;">Current Videos</h3>
+                <div id="currentVideos"></div>
+            </div>
+            
+            <!-- Templates Tab -->
+            <div class="admin-section" id="templates-tab">
+                <h3>Add New Template</h3>
+                <div class="form-group">
+                    <label for="templateImage">Template Image URL</label>
+                    <input type="text" id="templateImage" class="form-control" placeholder="Enter image URL">
+                </div>
+                <div class="form-group">
+                    <label for="templateTitle">Template Title</label>
+                    <input type="text" id="templateTitle" class="form-control" placeholder="Enter template title">
+                </div>
+                <div class="form-group">
+                    <label for="templateDescription">Template Description</label>
+                    <textarea id="templateDescription" class="form-control" placeholder="Enter template description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="templateLink">Download Link</label>
+                    <input type="text" id="templateLink" class="form-control" placeholder="Enter download URL">
+                </div>
+                <button class="btn" onclick="addTemplate()">Add Template</button>
+                
+                <h3 style="margin-top: 30px;">Current Templates</h3>
+                <div id="currentTemplates"></div>
+            </div>
+            
+            <!-- Contact Tab -->
+            <div class="admin-section" id="contact-tab">
+                <h3>Contact Information</h3>
+                <div class="form-group">
+                    <label for="contactEmail">Email Address</label>
+                    <input type="email" id="contactEmail" class="form-control" value="shubhamkaushikwork1@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label for="instagramLink">Instagram Link</label>
+                    <input type="text" id="instagramLink" class="form-control" value="https://www.instagram.com/s_.kaushik/">
+                </div>
+                <div class="form-group">
+                    <label for="whatsappNumber">WhatsApp Number (Optional)</label>
+                    <input type="text" id="whatsappNumber" class="form-control" placeholder="Enter WhatsApp number with country code">
+                </div>
+                <button class="btn" onclick="saveContactInfo()">Save Contact Info</button>
+            </div>
+            
+            <!-- Backup Tab -->
+            <div class="admin-section" id="backup-tab">
+                <h3>Backup & Restore</h3>
+                <p>Download all your website data as a backup file. You can restore it later if needed.</p>
+                <button class="btn" onclick="exportData()" style="margin-bottom: 15px;">
+                    <i class="fas fa-download"></i> Download Backup
+                </button>
+                
+                <h4 style="margin-top: 30px;">Restore from Backup</h4>
+                <p>Upload a previously downloaded backup file to restore your data.</p>
+                <button class="btn btn-secondary" onclick="importData()">
+                    <i class="fas fa-upload"></i> Upload & Restore Backup
+                </button>
+                
+                <h4 style="margin-top: 30px;">Reset Website</h4>
+                <p>Warning: This will reset all your data to default settings.</p>
+                <button class="btn" onclick="resetWebsite()" style="background: #dc3545;">
+                    <i class="fas fa-trash"></i> Reset All Data
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Website Content -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="logo">Shubham<span>Kaushik</span></a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#videos">Videos</a></li>
+                <li><a href="#templates">Templates</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="https://www.instagram.com/s_.kaushik/" target="_blank" class="cta-button" style="padding: 8px 20px; font-size: 0.9rem;">Follow <i class="fab fa-instagram"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <header id="home" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 id="heroTitleElement">Shubham Kaushik</h1>
+            <p class="hero-tagline" id="heroTaglineElement">Travel Photographer & Videographer</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="followersElement">400+</span>
+                    <span class="stat-label">Followers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="viewsElement">7K+</span>
+                    <span class="stat-label">Views</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100+</span>
+                    <span class="stat-label">Photos</span>
+                </div>
+            </div>
+            
+            <p>Stunning Photos, Epic Videos, and Creative Templates Await!</p>
+            <a href="https://www.instagram.com/s_.kaushik/" class="cta-button" target="_blank">
+                <i class="fab fa-instagram"></i> Follow on Instagram
+            </a>
+        </div>
+    </header>
+    
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Me</h2>
+            </div>
+            <div style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8;">
+                <p>Hey there! I'm Shubham Kaushik, a travel enthusiast and content creator capturing the world's beauty through photography and videography. From breathtaking landscapes to thrilling adventures, my Instagram reels bring stories to life with professional edits.</p>
+                <p>With over 400 followers and 7K+ views on my content, I'm passionate about sharing my travel experiences and helping others create stunning visuals with my free templates.</p>
+                <p>My journey started with a simple phone camera, and now I create professional-level content that inspires wanderlust and creativity. Join my journey and get inspired!</p>
+                <a href="https://www.instagram.com/s_.kaushik/" class="cta-button" target="_blank" style="margin-top: 30px;">
+                    <i class="fab fa-instagram"></i> Explore My Instagram
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Travel Photo Gallery</h2>
+            </div>
+            <p style="text-align: center; margin-bottom: 40px; color: #666; font-size: 1.1rem;">Click any image to view larger!</p>
+            <div class="gallery" id="galleryContainer">
+                <!-- Photos will be loaded here from localStorage -->
+            </div>
+        </div>
+    </section>
+    
+    <section id="videos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Videos & Reels</h2>
+            </div>
+            <p style="text-align: center; margin-bottom: 40px; color: #666; font-size: 1.1rem;">Watch my latest edits and travel adventures!</p>
+            <div class="videos-container" id="videosContainer">
+                <!-- Videos will be loaded here from localStorage -->
+            </div>
+        </div>
+    </section>
+    
+    <section id="templates">
+        <div class="container">
+            <div class="section-title">
+                <h2>Free Templates for Your Creations</h2>
+            </div>
+            <p style="text-align: center; margin-bottom: 40px; color: #666; font-size: 1.1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Level up your Instagram reels with my downloadable templates. All resources include my watermark 's_.kaushik' for proper attribution. Perfect for photography and videography edits!
+            </p>
+            <div class="templates-container" id="templatesContainer">
+                <!-- Templates will be loaded here from localStorage -->
+            </div>
+        </div>
+    </section>
+    
+    <footer id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2 style="color: white;">Get in Touch</h2>
+            </div>
+            
+            <div class="contact-info">
+                <p>Have questions, collaboration ideas, or just want to say hello?</p>
+                <p>Email: <a href="mailto:shubhamkaushikwork1@gmail.com" id="contactEmailElement">shubhamkaushikwork1@gmail.com</a></p>
+                <p>Instagram: <a href="https://www.instagram.com/s_.kaushik/" target="_blank" id="instagramLinkElement">@s_.kaushik</a></p>
+                <p id="whatsappElement" style="display: none;">WhatsApp: <a href="#" id="whatsappLink">+91 99999 99999</a></p>
+                
+                <div class="social-icons" style="justify-content: center; margin-top: 30px;">
+                    <a href="https://www.instagram.com/s_.kaushik/" target="_blank" id="socialInstagram"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:shubhamkaushikwork1@gmail.com" id="socialEmail"><i class="fas fa-envelope"></i></a>
+                    <a href="#" target="_blank" id="socialWhatsapp" style="display: none;"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2023 Shubham Kaushik. All rights reserved. | Watermark: s_.kaushik</p>
+                <p>All templates include watermark 's_.kaushik' for attribution.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Lightbox JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    
+    <script>
+        // Initialize with default data including your email
+        let websiteData = {
+            home: {
+                title: "Shubham Kaushik",
+                tagline: "Travel Photographer & Videographer",
+                heroImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+                followers: "400+",
+                views: "7K+"
+            },
+            gallery: [
+                {
+                    url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    alt: "Udaipur City Palace"
+                },
+                {
+                    url: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    alt: "Kumbalgarh mountains"
+                },
+                {
+                    url: "https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    alt: "Kumbalgarh Fort"
+                }
+            ],
+            videos: [
+                {
+                    thumbnail: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    title: "Udaipur Palace Tour",
+                    description: "A cinematic tour of the beautiful Udaipur City Palace with smooth transitions and engaging edits.",
+                    link: "https://www.instagram.com/reel/your-reel-id/"
+                },
+                {
+                    thumbnail: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    title: "Kumbalgarh Fort Adventure",
+                    description: "Exploring the majestic Kumbalgarh Fort with dynamic shots and thrilling perspectives.",
+                    link: "https://www.instagram.com/reel/your-reel-id/"
+                }
+            ],
+            templates: [
+                {
+                    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    title: "Travel Overlay Template (PSD)",
+                    description: "Professional Photoshop template with travel-themed overlays, frames, and effects. Watermarked as 's_.kaushik'.",
+                    link: "https://drive.google.com/your-template-link1"
+                }
+            ],
+            contact: {
+                email: "shubhamkaushikwork1@gmail.com",
+                instagram: "https://www.instagram.com/s_.kaushik/",
+                whatsapp: ""
+            }
+        };
+
+        // Load data from localStorage on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if data exists in localStorage
+            const savedData = localStorage.getItem('shubhamWebsiteData');
+            if (savedData) {
+                websiteData = JSON.parse(savedData);
+            }
+            
+            // Initialize the website with loaded data
+            updateWebsiteContent();
+            loadGallery();
+            loadVideos();
+            loadTemplates();
+            updateContactInfo();
+            
+            // Set up admin panel
+            setupAdminPanel();
+        });
+
+        // Update website content with current data
+        function updateWebsiteContent() {
+            document.getElementById('heroTitleElement').textContent = websiteData.home.title;
+            document.getElementById('heroTaglineElement').textContent = websiteData.home.tagline;
+            document.getElementById('followersElement').textContent = websiteData.home.followers;
+            document.getElementById('viewsElement').textContent = websiteData.home.views;
+            
+            // Update hero background image
+            const heroSection = document.querySelector('header');
+            heroSection.style.backgroundImage = `url('${websiteData.home.heroImage}')`;
+        }
+
+        // Update contact information
+        function updateContactInfo() {
+            document.getElementById('contactEmailElement').textContent = websiteData.contact.email;
+            document.getElementById('contactEmailElement').href = `mailto:${websiteData.contact.email}`;
+            document.getElementById('instagramLinkElement').href = websiteData.contact.instagram;
+            document.getElementById('socialInstagram').href = websiteData.contact.instagram;
+            document.getElementById('socialEmail').href = `mailto:${websiteData.contact.email}`;
+            
+            // Update WhatsApp if available
+            if (websiteData.contact.whatsapp) {
+                document.getElementById('whatsappElement').style.display = 'block';
+                document.getElementById('whatsappLink').textContent = websiteData.contact.whatsapp;
+                document.getElementById('whatsappLink').href = `https://wa.me/${websiteData.contact.whatsapp.replace(/\D/g, '')}`;
+                document.getElementById('socialWhatsapp').style.display = 'inline-flex';
+                document.getElementById('socialWhatsapp').href = `https://wa.me/${websiteData.contact.whatsapp.replace(/\D/g, '')}`;
+            }
+        }
+
+        // Load gallery photos
+        function loadGallery() {
+            const galleryContainer = document.getElementById('galleryContainer');
+            galleryContainer.innerHTML = '';
+            
+            if (websiteData.gallery.length === 0) {
+                galleryContainer.innerHTML = '<p style="text-align: center; width: 100%; color: #666;">No photos added yet. Add photos from the admin panel.</p>';
+                return;
+            }
+            
+            websiteData.gallery.forEach((photo, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <a href="${photo.url}" data-lightbox="gallery" data-title="${photo.alt}">
+                        <img src="${photo.url}" alt="${photo.alt}" loading="lazy">
+                    </a>
+                    <button class="btn btn-secondary" onclick="removePhoto(${index})" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 2;">Remove</button>
+                `;
+                galleryContainer.appendChild(galleryItem);
+            });
+        }
+
+        // Load videos
+        function loadVideos() {
+            const videosContainer = document.getElementById('videosContainer');
+            videosContainer.innerHTML = '';
+            
+            if (websiteData.videos.length === 0) {
+                videosContainer.innerHTML = '<p style="text-align: center; width: 100%; color: #666;">No videos added yet. Add videos from the admin panel.</p>';
+                return;
+            }
+            
+            websiteData.videos.forEach((video, index) => {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'video-item';
+                videoItem.innerHTML = `
+                    <div class="video-thumbnail">
+                        <img src="${video.thumbnail}" alt="${video.title}" loading="lazy">
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3>${video.title}</h3>
+                        <p>${video.description}</p>
+                        <a href="${video.link}" target="_blank" style="color: #E1306C; text-decoration: none; font-weight: 500;">Watch on Instagram →</a>
+                        <button class="btn btn-secondary" onclick="removeVideo(${index})" style="margin-top: 10px; padding: 5px 10px; font-size: 0.8rem;">Remove</button>
+                    </div>
+                `;
+                videosContainer.appendChild(videoItem);
+            });
+        }
+
+        // Load templates
+        function loadTemplates() {
+            const templatesContainer = document.getElementById('templatesContainer');
+            templatesContainer.innerHTML = '';
+            
+            if (websiteData.templates.length === 0) {
+                templatesContainer.innerHTML = '<p style="text-align: center; width: 100%; color: #666;">No templates added yet. Add templates from the admin panel.</p>';
+                return;
+            }
+            
+            websiteData.templates.forEach((template, index) => {
+                const templateCard = document.createElement('div');
+                templateCard.className = 'template-card';
+                templateCard.innerHTML = `
+                    <div class="template-image">
+                        <img src="${template.image}" alt="${template.title}" loading="lazy">
+                    </div>
+                    <div class="template-content">
+                        <h3>${template.title}</h3>
+                        <p>${template.description}</p>
+                        <a href="${template.link}" class="download-btn" target="_blank">Download Now</a>
+                        <button class="btn btn-secondary" onclick="removeTemplate(${index})" style="margin-top: 10px; padding: 5px 10px; font-size: 0.8rem;">Remove</button>
+                    </div>
+                `;
+                templatesContainer.appendChild(templateCard);
+            });
+        }
+
+        // Admin Panel Functions
+        function setupAdminPanel() {
+            const adminBtn = document.getElementById('adminBtn');
+            const adminModal = document.getElementById('adminModal');
+            const closeAdmin = document.getElementById('closeAdmin');
+            const adminTabs = document.querySelectorAll('.admin-tab');
+            
+            // Toggle admin panel
+            adminBtn.addEventListener('click', function() {
+                const password = prompt('Enter admin password:');
+                if (password === 'admin123') {
+                    adminModal.style.display = 'flex';
+                    loadAdminData();
+                } else {
+                    alert('Incorrect password');
+                }
+            });
+            
+            // Close admin panel
+            closeAdmin.addEventListener('click', function() {
+                adminModal.style.display = 'none';
+            });
+            
+            // Close when clicking outside
+            adminModal.addEventListener('click', function(e) {
+                if (e.target === adminModal) {
+                    adminModal.style.display = 'none';
+                }
+            });
+            
+            // Tab switching
+            adminTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    adminTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding section
+                    document.querySelectorAll('.admin-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    document.getElementById(tabId + '-tab').classList.add('active');
+                    
+                    // Load data for current tab
+                    if (tabId === 'gallery') loadCurrentPhotos();
+                    if (tabId === 'videos') loadCurrentVideos();
+                    if (tabId === 'templates') loadCurrentTemplates();
+                });
+            });
+            
+            // Preview image when URL is entered
+            document.getElementById('heroImage').addEventListener('input', function() {
+                const preview = document.getElementById('heroPreview');
+                if (this.value) {
+                    preview.src = this.value;
+                    preview.style.display = 'block';
+                } else {
+                    preview.style.display = 'none';
+                }
+            });
+        }
+
+        function loadAdminData() {
+            // Load home data
+            document.getElementById('heroTitle').value = websiteData.home.title;
+            document.getElementById('heroTagline').value = websiteData.home.tagline;
+            document.getElementById('heroImage').value = websiteData.home.heroImage;
+            document.getElementById('followers').value = websiteData.home.followers;
+            document.getElementById('views').value = websiteData.home.views;
+            
+            // Load contact data
+            document.getElementById('contactEmail').value = websiteData.contact.email;
+            document.getElementById('instagramLink').value = websiteData.contact.instagram;
+            document.getElementById('whatsappNumber').value = websiteData.contact.whatsapp || '';
+            
+            // Show hero image preview
+            const preview = document.getElementById('heroPreview');
+            if (websiteData.home.heroImage) {
+                preview.src = websiteData.home.heroImage;
+                preview.style.display = 'block';
+            }
+            
+            // Load current items
+            loadCurrentPhotos();
+            loadCurrentVideos();
+            loadCurrentTemplates();
+        }
+
+        function loadCurrentPhotos() {
+            const container = document.getElementById('currentPhotos');
+            container.innerHTML = '';
+            
+            if (websiteData.gallery.length === 0) {
+                container.innerHTML = '<p>No photos added yet.</p>';
+                return;
+            }
+            
+            websiteData.gallery.forEach((photo, index) => {
+                const photoDiv = document.createElement('div');
+                photoDiv.style.marginBottom = '15px';
+                photoDiv.style.padding = '10px';
+                photoDiv.style.border = '1px solid #ddd';
+                photoDiv.style.borderRadius = '5px';
+                photoDiv.innerHTML = `
+                    <img src="${photo.url}" style="width: 100px; height: 70px; object-fit: cover; border-radius: 5px; margin-right: 10px; float: left;">
+                    <div style="overflow: hidden;">
+                        <strong>${photo.alt}</strong><br>
+                        <small style="color: #666;">${photo.url.substring(0, 50)}...</small><br>
+                        <button class="btn btn-secondary" onclick="removePhoto(${index})" style="padding: 5px 10px; font-size: 0.8rem; margin-top: 5px;">Remove</button>
+                    </div>
+                    <div style="clear: both;"></div>
+                `;
+                container.appendChild(photoDiv);
+            });
+        }
+
+        function loadCurrentVideos() {
+            const container = document.getElementById('currentVideos');
+            container.innerHTML = '';
+            
+            if (websiteData.videos.length === 0) {
+                container.innerHTML = '<p>No videos added yet.</p>';
+                return;
+            }
+            
+            websiteData.videos.forEach((video, index) => {
+                const videoDiv = document.createElement('div');
+                videoDiv.style.marginBottom = '15px';
+                videoDiv.style.padding = '10px';
+                videoDiv.style.border = '1px solid #ddd';
+                videoDiv.style.borderRadius = '5px';
+                videoDiv.innerHTML = `
+                    <strong>${video.title}</strong><br>
+                    <small style="color: #666;">${video.description.substring(0, 50)}...</small><br>
+                    <button class="btn btn-secondary" onclick="removeVideo(${index})" style="padding: 5px 10px; font-size: 0.8rem; margin-top: 5px;">Remove</button>
+                `;
+                container.appendChild(videoDiv);
+            });
+        }
+
+        function loadCurrentTemplates() {
+            const container = document.getElementById('currentTemplates');
+            container.innerHTML = '';
+            
+            if (websiteData.templates.length === 0) {
+                container.innerHTML = '<p>No templates added yet.</p>';
+                return;
+            }
+            
+            websiteData.templates.forEach((template, index) => {
+                const templateDiv = document.createElement('div');
+                templateDiv.style.marginBottom = '15px';
+                templateDiv.style.padding = '10px';
+                templateDiv.style.border = '1px solid #ddd';
+                templateDiv.style.borderRadius = '5px';
+                templateDiv.innerHTML = `
+                    <strong>${template.title}</strong><br>
+                    <small style="color: #666;">${template.description.substring(0, 50)}...</small><br>
+                    <button class="btn btn-secondary" onclick="removeTemplate(${index})" style="padding: 5px 10px; font-size: 0.8rem; margin-top: 5px;">Remove</button>
+                `;
+                container.appendChild(templateDiv);
+            });
+        }
+
+        // Save Functions
+        function saveHomeContent() {
+            websiteData.home = {
+                title: document.getElementById('heroTitle').value,
+                tagline: document.getElementById('heroTagline').value,
+                heroImage: document.getElementById('heroImage').value || websiteData.home.heroImage,
+                followers: document.getElementById('followers').value,
+                views: document.getElementById('views').value
+            };
+            
+            saveToLocalStorage();
+            updateWebsiteContent();
+            alert('Home content saved successfully!');
+        }
+
+        function saveContactInfo() {
+            websiteData.contact = {
+                email: document.getElementById('contactEmail').value,
+                instagram: document.getElementById('instagramLink').value,
+                whatsapp: document.getElementById('whatsappNumber').value
+            };
+            
+            saveToLocalStorage();
+            updateContactInfo();
+            alert('Contact information saved successfully!');
+        }
+
+        function addPhoto() {
+            const url = document.getElementById('photoUrl').value;
+            const alt = document.getElementById('photoAlt').value;
+            
+            if (!url || !alt) {
+                alert('Please fill in both URL and description');
+                return;
+            }
+            
+            // Check if URL is valid
+            if (!url.startsWith('http')) {
+                alert('Please enter a valid URL starting with http:// or https://');
+                return;
+            }
+            
+            websiteData.gallery.push({ url, alt });
+            saveToLocalStorage();
+            loadGallery();
+            loadCurrentPhotos();
+            
+            // Clear inputs
+            document.getElementById('photoUrl').value = '';
+            document.getElementById('photoAlt').value = '';
+            
+            alert('Photo added successfully!');
+        }
+
+        function addVideo() {
+            const thumbnail = document.getElementById('videoThumbnail').value;
+            const title = document.getElementById('videoTitle').value;
+            const description = document.getElementById('videoDescription').value;
+            const link = document.getElementById('videoLink').value;
+            
+            if (!thumbnail || !title || !description || !link) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            websiteData.videos.push({ thumbnail, title, description, link });
+            saveToLocalStorage();
+            loadVideos();
+            loadCurrentVideos();
+            
+            // Clear inputs
+            document.getElementById('videoThumbnail').value = '';
+            document.getElementById('videoTitle').value = '';
+            document.getElementById('videoDescription').value = '';
+            document.getElementById('videoLink').value = '';
+            
+            alert('Video added successfully!');
+        }
+
+        function addTemplate() {
+            const image = document.getElementById('templateImage').value;
+            const title = document.getElementById('templateTitle').value;
+            const description = document.getElementById('templateDescription').value;
+            const link = document.getElementById('templateLink').value;
+            
+            if (!image || !title || !description || !link) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            websiteData.templates.push({ image, title, description, link });
+            saveToLocalStorage();
+            loadTemplates();
+            loadCurrentTemplates();
+            
+            // Clear inputs
+            document.getElementById('templateImage').value = '';
+            document.getElementById('templateTitle').value = '';
+            document.getElementById('templateDescription').value = '';
+            document.getElementById('templateLink').value = '';
+            
+            alert('Template added successfully!');
+        }
+
+        // Remove Functions
+        function removePhoto(index) {
+            if (confirm('Are you sure you want to remove this photo?')) {
+                websiteData.gallery.splice(index, 1);
+                saveToLocalStorage();
+                loadGallery();
+                loadCurrentPhotos();
+            }
+        }
+
+        function removeVideo(index) {
+            if (confirm('Are you sure you want to remove this video?')) {
+                websiteData.videos.splice(index, 1);
+                saveToLocalStorage();
+                loadVideos();
+                loadCurrentVideos();
+            }
+        }
+
+        function removeTemplate(index) {
+            if (confirm('Are you sure you want to remove this template?')) {
+                websiteData.templates.splice(index, 1);
+                saveToLocalStorage();
+                loadTemplates();
+                loadCurrentTemplates();
+            }
+        }
+
+        // Save to localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('shubhamWebsiteData', JSON.stringify(websiteData));
+        }
+
+        // Export data function (for backup)
+        function exportData() {
+            const dataStr = JSON.stringify(websiteData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = 'shubham-kaushik-website-backup.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            alert('Backup downloaded successfully!');
+        }
+
+        // Import data function (for restore)
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        websiteData = importedData;
+                        saveToLocalStorage();
+                        updateWebsiteContent();
+                        updateContactInfo();
+                        loadGallery();
+                        loadVideos();
+                        loadTemplates();
+                        alert('Data imported successfully! Website will refresh.');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+                    } catch (error) {
+                        alert('Error importing data. Please check the file format.');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+
+        // Reset website function
+        function resetWebsite() {
+            if (confirm('WARNING: This will reset ALL your website data to default settings. This action cannot be undone. Are you sure?')) {
+                // Create default data
+                const defaultData = {
+                    home: {
+                        title: "Shubham Kaushik",
+                        tagline: "Travel Photographer & Videographer",
+                        heroImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+                        followers: "400+",
+                        views: "7K+"
+                    },
+                    gallery: [
+                        {
+                            url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                            alt: "Udaipur City Palace"
+                        }
+                    ],
+                    videos: [],
+                    templates: [],
+                    contact: {
+                        email: "shubhamkaushikwork1@gmail.com",
+                        instagram: "https://www.instagram.com/s_.kaushik/",
+                        whatsapp: ""
+                    }
+                };
+                
+                websiteData = defaultData;
+                saveToLocalStorage();
+                
+                alert('Website reset to default settings. Page will refresh.');
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            }
+        }
+
+        // Add keyboard shortcut for admin panel (Ctrl+Shift+A)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                const password = prompt('Enter admin password:');
+                if (password === 'admin123') {
+                    document.getElementById('adminModal').style.display = 'flex';
+                    loadAdminData();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
