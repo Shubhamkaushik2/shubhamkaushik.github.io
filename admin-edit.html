@@ -1,0 +1,86 @@
+<!-- FILE: admin-edit.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Gallery</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .item { border: 1px solid #ccc; padding: 15px; margin: 10px; }
+        button { background: #6a11cb; color: white; padding: 10px; border: none; margin: 5px; }
+        textarea, input { width: 100%; padding: 8px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>📱 Edit Gallery</h1>
+    
+    <div id="items-container">
+        <!-- Items load here -->
+    </div>
+    
+    <button onclick="addNewItem()">➕ Add New Post</button>
+    <button onclick="saveAll()">💾 Save to GitHub</button>
+    
+    <script src="data.js"></script>
+    <script>
+        // Load and display items
+        function loadItems() {
+            const container = document.getElementById('items-container');
+            container.innerHTML = '';
+            
+            galleryData.forEach((item, index) => {
+                container.innerHTML += `
+                    <div class="item" data-index="${index}">
+                        <h3>Item ${index + 1}</h3>
+                        <input type="text" value="${item.title}" onchange="updateItem(${index}, 'title', this.value)" placeholder="Title">
+                        <textarea onchange="updateItem(${index}, 'description', this.value)">${item.description}</textarea>
+                        <input type="text" value="${item.images.join(',')}" onchange="updateItem(${index}, 'images', this.value.split(','))" placeholder="Image URLs (comma separated)">
+                        <input type="text" value="${item.instagramUrl}" onchange="updateItem(${index}, 'instagramUrl', this.value)" placeholder="Instagram URL">
+                        <button onclick="removeItem(${index})">🗑️ Remove</button>
+                    </div>
+                `;
+            });
+        }
+        
+        // Update item
+        function updateItem(index, field, value) {
+            galleryData[index][field] = value;
+        }
+        
+        // Add new item
+        function addNewItem() {
+            galleryData.push({
+                id: galleryData.length + 1,
+                type: "single",
+                images: [""],
+                title: "New Post",
+                description: "Description here",
+                category: "photos",
+                instagramUrl: "",
+                date: new Date().toISOString().split('T')[0]
+            });
+            loadItems();
+        }
+        
+        // Remove item
+        function removeItem(index) {
+            if(confirm("Delete this post?")) {
+                galleryData.splice(index, 1);
+                loadItems();
+            }
+        }
+        
+        // Save to GitHub
+        function saveAll() {
+            const code = `const galleryData = ${JSON.stringify(galleryData, null, 4)};`;
+            
+            // Show code to copy
+            prompt("Copy this code and REPLACE data.js file on GitHub:", code);
+            
+            alert("1. Copy the code above\n2. Go to GitHub → data.js\n3. Replace ALL code\n4. Commit changes\n5. Refresh gallery page in 1 minute");
+        }
+        
+        // Initial load
+        loadItems();
+    </script>
+</body>
+</html>
