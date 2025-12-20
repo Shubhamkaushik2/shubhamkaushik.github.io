@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Portfolio Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        
+        .admin-header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .admin-links {
+            margin-top: 20px;
+        }
+        
+        .admin-links a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+        }
+        
+        .instructions {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+        }
+        
+        .sheet-link {
+            background: #28a745;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Shubham Kaushik</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="admin-panel.html" class="active">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1><i class="fas fa-cog"></i> Gallery Admin Panel</h1>
+            <p>Manage your gallery posts directly in Google Sheets</p>
+            <div class="admin-links">
+                <a href="gallery.html"><i class="fas fa-images"></i> View Gallery</a>
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            </div>
+        </header>
+
+        <section style="text-align: center;">
+            <h2>How to Add Posts:</h2>
+            <p>Click the button below to open your Google Sheet and add new posts:</p>
+            
+            <a href="https://docs.google.com/spreadsheets/d/1ct5CrzsB3QOFouMhJ9IfbGxO72a2WKRDJ5QnX4lv6Uw/edit" 
+               target="_blank" class="sheet-link">
+                <i class="fas fa-edit"></i> Open Google Sheet
+            </a>
+        </section>
+
+        <section class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Step-by-Step Guide:</h3>
+            <ol>
+                <li><strong>Open the Google Sheet</strong> (click button above)</li>
+                <li><strong>Add a new row</strong> at the bottom</li>
+                <li><strong>Copy this format:</strong>
+                    <pre>
+id: 3 (auto-increment)
+type: "slider" or "single"
+images: "url1,url2,url3" (comma separated)
+title: "Your title"
+description: "Your description"
+category: "photos" or "videos"
+instagramUrl: "https://instagram.com/p/..." (optional)
+date: "2024-01-20"
+order: 3 (for sorting)
+active: "TRUE"
+                    </pre>
+                </li>
+                <li><strong>Save</strong> (auto-saves in Google Sheets)</li>
+                <li><strong>Refresh your gallery page</strong> to see changes</li>
+            </ol>
+            
+            <h4>How to get Instagram Image URLs:</h4>
+            <ol>
+                <li>Open Instagram post in browser</li>
+                <li>Right-click on image → "Copy image address"</li>
+                <li>Paste in Google Sheet</li>
+                <li>For multiple images, copy each one and separate with commas</li>
+            </ol>
+        </section>
+
+        <section style="margin-top: 40px; text-align: center;">
+            <h3>Need Help?</h3>
+            <p>Your gallery automatically updates from Google Sheets every time someone visits.</p>
+            <p>Changes may take 1-2 minutes to appear due to caching.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2024 Shubham Kaushik. Gallery powered by Google Sheets</p>
+    </footer>
+</body>
+</html>
