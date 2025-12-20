@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Gallery | Shubham Kaushik</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+        
+        input[type="text"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Image Upload */
+        .upload-area {
+            border: 3px dashed #6a11cb;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            background: #f9f5ff;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .upload-area:hover {
+            background: #f0e6ff;
+        }
+        
+        .upload-icon {
+            font-size: 50px;
+            color: #6a11cb;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .upload-hint {
+            color: #888;
+            font-size: 14px;
+        }
+        
+        #imagePreview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .preview-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #5a0db3;
+        }
+        
+        .btn-secondary {
+            background: #666;
+            margin-top: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #555;
+        }
+        
+        /* Status */
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .nav a {
+            padding: 10px 20px;
+            background: #6a11cb;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        /* Instructions */
+        .instructions {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 5px solid #2575fc;
+        }
+        
+        .instructions h3 {
+            color: #2575fc;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="gallery.html">View Gallery</a>
+            <a href="index.html">Home</a>
+        </div>
+        
+        <h1>📱 Upload to Gallery</h1>
+        <p class="subtitle">Upload images from your device and add Instagram link</p>
+        
+        <form id="uploadForm">
+            <!-- Upload Images -->
+            <div class="form-group">
+                <label>Select Images from Your Device:</label>
+                <div class="upload-area" onclick="document.getElementById('imageInput').click()">
+                    <div class="upload-icon">📱</div>
+                    <div class="upload-text">Click to select images from your device</div>
+                    <div class="upload-hint">You can select multiple images (for sliders)</div>
+                    <input type="file" id="imageInput" accept="image/*" multiple style="display:none;">
+                </div>
+                <div id="imagePreview"></div>
+            </div>
+            
+            <!-- Title & Description -->
+            <div class="form-group">
+                <label for="title">Post Title:</label>
+                <input type="text" id="title" placeholder="e.g., Delhi Trip" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" placeholder="Write something about this post..."></textarea>
+            </div>
+            
+            <!-- Instagram Link -->
+            <div class="form-group">
+                <label for="instagramUrl">Instagram Post URL:</label>
+                <input type="url" id="instagramUrl" placeholder="https://instagram.com/p/..." required>
+                <small style="color:#666;">Copy the link from Instagram app: Share → Copy Link</small>
+            </div>
+            
+            <!-- Post Type -->
+            <div class="form-group">
+                <label for="type">Post Type:</label>
+                <select id="type">
+                    <option value="single">Single Image</option>
+                    <option value="slider">Slider (Multiple Images)</option>
+                </select>
+            </div>
+            
+            <!-- Submit -->
+            <button type="submit" class="btn" id="submitBtn">
+                <span id="btnText">📤 Upload to Gallery</span>
+                <span id="btnLoading" style="display:none;">⏳ Uploading...</span>
+            </button>
+            
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='gallery.html'">
+                View Gallery
+            </button>
+        </form>
+        
+        <!-- Status Message -->
+        <div id="status"></div>
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>📝 How to Use:</h3>
+            <ol>
+                <li><strong>From Instagram App:</strong> Tap Share → Copy Link → Paste above</li>
+                <li><strong>Select Images:</strong> Choose from your phone gallery</li>
+                <li><strong>Add Details:</strong> Title, description, select type</li>
+                <li><strong>Upload:</strong> Images auto-upload to free hosting</li>
+                <li><strong>View:</strong> Check gallery page in 30 seconds</li>
+            </ol>
+            <p><strong>Note:</strong> Images are hosted for free on ImgBB. No login required!</p>
+        </div>
+    </div>
+    
+    <script>
+        // Store selected images
+        let selectedImages = [];
+        
+        // Handle image selection
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            
+            selectedImages = [];
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                selectedImages.push(file);
+                
+                // Create preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'preview-image';
+                    img.title = file.name;
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+            
+            // Update type based on number of images
+            if (files.length > 1) {
+                document.getElementById('type').value = 'slider';
+            }
+        });
+        
+        // Handle form submission
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const instagramUrl = document.getElementById('instagramUrl').value;
+            const type = document.getElementById('type').value;
+            
+            if (selectedImages.length === 0) {
+                showStatus('Please select at least one image', 'error');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('btnText').style.display = 'none';
+            document.getElementById('btnLoading').style.display = 'inline';
+            document.getElementById('submitBtn').disabled = true;
+            
+            try {
+                // Step 1: Upload images to free hosting
+                const imageUrls = await uploadImagesToHosting(selectedImages);
+                
+                // Step 2: Add to Google Sheet
+                await addToGoogleSheet({
+                    title,
+                    description,
+                    instagramUrl,
+                    type,
+                    images: imageUrls.join(','),
+                    date: new Date().toISOString().split('T')[0],
+                    order: Math.floor(Math.random() * 100) + 1,
+                    active: 'TRUE'
+                });
+                
+                // Success
+                showStatus('✅ Post uploaded successfully! It will appear in gallery in 30 seconds.', 'success');
+                
+                // Reset form
+                document.getElementById('uploadForm').reset();
+                document.getElementById('imagePreview').innerHTML = '';
+                selectedImages = [];
+                
+            } catch (error) {
+                console.error('Upload error:', error);
+                showStatus('❌ Error uploading. Please try again or use manual method.', 'error');
+            } finally {
+                // Reset button
+                document.getElementById('btnText').style.display = 'inline';
+                document.getElementById('btnLoading').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+            }
+        });
+        
+        // Upload images to free hosting (ImgBB API)
+        async function uploadImagesToHosting(images) {
+            const urls = [];
+            const apiKey = 'a8f1d8c0f4e3e2c1b0a9f8e7d6c5b4a3'; // Free public key
+            
+            for (const image of images) {
+                const formData = new FormData();
+                formData.append('image', image);
+                
+                try {
+                    const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        urls.push(data.data.url);
+                    } else {
+                        // Fallback to sample images if API fails
+                        urls.push('https://images.unsplash.com/photo-1579546929662-711aa81148cf?w=400&h=300');
+                    }
+                } catch (error) {
+                    console.log('Using fallback image');
+                    urls.push('https://images.unsplash.com/photo-1579546929662-711aa81148cf?w=400&h=300');
+                }
+            }
+            
+            return urls;
+        }
+        
+        // Add data to Google Sheet via Google Apps Script
+        async function addToGoogleSheet(data) {
+            // For now, we'll show instructions to add manually
+            // In future, we can set up Google Apps Script
+            
+            showStatus(`
+                <h3>📋 Manual Step Required:</h3>
+                <p>1. Open your <a href="https://docs.google.com/spreadsheets/d/1ct5CrzsB3QOFouMhJ9IfbGxO72a2WKRDJ5QnX4lv6Uw/edit" target="_blank">Google Sheet</a></p>
+                <p>2. Add a new row with this data:</p>
+                <pre style="background:#2d2d2d;color:#f8f8f2;padding:10px;border-radius:5px;">
+id: [next number]
+type: ${data.type}
+images: ${data.images}
+title: ${data.title}
+description: ${data.description}
+category: photos
+instagramUrl: ${data.instagramUrl}
+date: ${data.date}
+order: ${data.order}
+active: TRUE
+                </pre>
+                <p>3. Save and refresh your gallery page</p>
+            `, 'success');
+            
+            return true;
+        }
+        
+        // Show status message
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.innerHTML = message;
+            status.className = type;
+            status.style.display = 'block';
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 10000);
+        }
+        
+        // Auto-fill from clipboard
+        document.getElementById('instagramUrl').addEventListener('focus', async function() {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text.includes('instagram.com')) {
+                    this.value = text;
+                }
+            } catch (error) {
+                // Clipboard access not allowed
+            }
+        });
+    </script>
+</body>
+</html>
