@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Gallery | Shubham Kaushik</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="gallery-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Shubham Kaushik</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="gallery.html" class="active">Gallery</a>
+                <a href="admin-panel.html">Admin</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="gallery-header">
+        <h1>My Gallery</h1>
+        <p>Instagram posts, photos, and creative work</p>
+        
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="slider">Sliders</button>
+            <button class="filter-btn" data-filter="single">Single</button>
+            <button class="filter-btn" data-filter="photos">Photos</button>
+            <button class="filter-btn" data-filter="videos">Videos</button>
+        </div>
+    </section>
+
+    <section class="gallery-container" id="galleryContainer">
+        <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i> Loading gallery...
+        </div>
+    </section>
+
+    <div class="add-gallery-btn">
+        <a href="admin-panel.html" class="btn-admin">
+            <i class="fas fa-plus"></i> Add New Post
+        </a>
+    </div>
+
+    <footer>
+        <p>© 2024 Shubham Kaushik. All rights reserved.</p>
+    </footer>
+
+    <script src="fetch-data.js"></script>
+    <script src="slider.js"></script>
+    <script src="gallery-loader.js"></script>
+</body>
+</html>
