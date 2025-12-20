@@ -1,41 +1,154 @@
-<script src="data.js"></script>
-<script>
-    // Load gallery from data.js
-    function loadGallery() {
-        const container = document.getElementById('galleryContainer');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Gallery | Shubham Kaushik</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="gallery-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Additional styles if gallery-style.css doesn't exist */
+        .gallery-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
         
-        galleryData.forEach(item => {
-            const images = item.images || [];
-            const firstImage = images[0] || '';
+        .gallery-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .gallery-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .gallery-item-info {
+            padding: 20px;
+        }
+        
+        .gallery-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION - ADD EDIT GALLERY LINK HERE -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Shubham Kaushik</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="gallery.html" class="active">Gallery</a>
+                <!-- CHANGE THIS LINE: -->
+                <a href="admin-edit.html">Edit Gallery</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- GALLERY HEADER -->
+    <section class="gallery-header">
+        <h1>My Gallery</h1>
+        <p>Instagram posts, photos, and creative work</p>
+    </section>
+
+    <!-- GALLERY CONTAINER -->
+    <section class="gallery-container" id="galleryContainer">
+        <div style="text-align:center; padding:50px; grid-column:1/-1;">
+            Loading gallery...
+        </div>
+    </section>
+
+    <!-- ADD POST BUTTON -->
+    <div style="text-align:center; margin:40px;">
+        <a href="admin-edit.html" style="display:inline-block; padding:12px 30px; background:#6a11cb; color:white; border-radius:25px; text-decoration:none;">
+            + Add New Post
+        </a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="text-align:center; padding:20px; background:#f5f5f5; margin-top:50px;">
+        <p>© 2024 Shubham Kaushik. All rights reserved.</p>
+    </footer>
+
+    <!-- YOUR JAVASCRIPT -->
+    <script src="data.js"></script>
+    <script>
+        // Load gallery from data.js
+        function loadGallery() {
+            const container = document.getElementById('galleryContainer');
             
-            const galleryItem = document.createElement('div');
-            galleryItem.className = 'gallery-item';
-            galleryItem.innerHTML = `
-                ${item.instagramUrl ? 
-                    `<a href="${item.instagramUrl}" target="_blank" style="display:block; text-decoration:none;">
-                        <img src="${firstImage}" alt="${item.title}" class="gallery-image">
-                    </a>` : 
-                    `<img src="${firstImage}" alt="${item.title}" class="gallery-image">`
-                }
-                <div class="gallery-item-info">
-                    <h3>${item.title}</h3>
-                    <p>${item.description}</p>
-                    <div class="gallery-meta">
-                        <span>📅 ${item.date}</span>
-                        ${item.instagramUrl ? 
-                            `<a href="${item.instagramUrl}" target="_blank" 
-                               style="background:#E4405F; color:white; padding:5px 15px; border-radius:15px; text-decoration:none;">
-                                📸 Instagram
-                            </a>` : ''
-                        }
+            // Clear loading message
+            container.innerHTML = '';
+            
+            // Check if data exists
+            if (!window.galleryData || galleryData.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:50px; grid-column:1/-1;">
+                        <h3>No posts yet</h3>
+                        <p>Add your first post from the Edit Gallery page!</p>
+                        <a href="admin-edit.html" style="display:inline-block; margin-top:20px; padding:10px 20px; background:#6a11cb; color:white; border-radius:20px; text-decoration:none;">
+                            Add First Post
+                        </a>
                     </div>
-                </div>
-            `;
+                `;
+                return;
+            }
             
-            container.appendChild(galleryItem);
-        });
-    }
-    
-    // Load when page ready
-    document.addEventListener('DOMContentLoaded', loadGallery);
-</script>
+            // Display each item
+            galleryData.forEach(item => {
+                const images = item.images || [];
+                const firstImage = images[0] || '';
+                
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    ${item.instagramUrl ? 
+                        `<a href="${item.instagramUrl}" target="_blank" style="display:block; text-decoration:none;">
+                            <img src="${firstImage}" alt="${item.title}" class="gallery-image">
+                        </a>` : 
+                        `<img src="${firstImage}" alt="${item.title}" class="gallery-image">`
+                    }
+                    <div class="gallery-item-info">
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                        <div class="gallery-meta">
+                            <span>📅 ${item.date}</span>
+                            ${item.instagramUrl ? 
+                                `<a href="${item.instagramUrl}" target="_blank" 
+                                   style="background:#E4405F; color:white; padding:5px 15px; border-radius:15px; text-decoration:none;">
+                                    📸 Instagram
+                                </a>` : ''
+                            }
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(galleryItem);
+            });
+        }
+        
+        // Load when page ready
+        document.addEventListener('DOMContentLoaded', loadGallery);
+    </script>
+</body>
+</html>
