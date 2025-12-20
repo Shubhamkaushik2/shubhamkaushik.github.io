@@ -1,86 +1,489 @@
-<!-- FILE: admin-edit.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Edit Gallery</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Gallery | Shubham Kaushik</title>
     <style>
-        body { font-family: Arial; padding: 20px; }
-        .item { border: 1px solid #ccc; padding: 15px; margin: 10px; }
-        button { background: #6a11cb; color: white; padding: 10px; border: none; margin: 5px; }
-        textarea, input { width: 100%; padding: 8px; margin: 5px 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav a {
+            padding: 10px 25px;
+            background: #6a11cb;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav a:hover {
+            background: #5a0db3;
+            transform: translateY(-2px);
+        }
+        
+        /* Gallery Items Editor */
+        .items-container {
+            margin-top: 30px;
+        }
+        
+        .item-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #eee;
+            transition: all 0.3s;
+        }
+        
+        .item-card:hover {
+            border-color: #6a11cb;
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.1);
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .item-number {
+            background: #6a11cb;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+        }
+        
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .images-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .images-input input {
+            flex: 1;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: #5a0db3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        #codeOutput {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .instructions {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 5px solid #2575fc;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav a {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>📱 Edit Gallery</h1>
-    
-    <div id="items-container">
-        <!-- Items load here -->
+    <div class="container">
+        <div class="nav">
+            <a href="gallery.html">👀 View Gallery</a>
+            <a href="index.html">🏠 Home</a>
+            <a href="upload-gallery.html">📤 Upload Images</a>
+        </div>
+        
+        <h1>✏️ Edit Gallery</h1>
+        <p class="subtitle">Edit your gallery posts directly - changes save for all devices</p>
+        
+        <div class="action-buttons">
+            <button class="btn" onclick="addNewItem()">➕ Add New Post</button>
+            <button class="btn btn-success" onclick="generateCode()">💾 Generate Code</button>
+            <button class="btn" onclick="loadFromCurrent()">🔄 Load Current Data</button>
+        </div>
+        
+        <div class="items-container" id="itemsContainer">
+            <!-- Items will appear here -->
+            <div style="text-align:center; padding:30px; color:#666;">
+                Loading posts... If nothing appears, click "Load Current Data"
+            </div>
+        </div>
+        
+        <div id="codeOutput"></div>
+        
+        <div class="instructions">
+            <h3>📝 How to Update Your Gallery:</h3>
+            <ol>
+                <li><strong>Edit posts</strong> above (change images, titles, Instagram links)</li>
+                <li>Click <strong>"Generate Code"</strong> button</li>
+                <li>Copy the <strong>entire code</strong> that appears</li>
+                <li>Go to GitHub → <strong>data.js</strong> file</li>
+                <li><strong>Replace ALL code</strong> in data.js with the copied code</li>
+                <li>Click <strong>"Commit changes"</strong></li>
+                <li>Wait 30 seconds and refresh your Gallery page</li>
+            </ol>
+            <p><strong>💡 Tip:</strong> Images should be direct URLs. For Instagram, use: Right-click image → Copy image address</p>
+        </div>
     </div>
     
-    <button onclick="addNewItem()">➕ Add New Post</button>
-    <button onclick="saveAll()">💾 Save to GitHub</button>
-    
-    <script src="data.js"></script>
     <script>
-        // Load and display items
-        function loadItems() {
-            const container = document.getElementById('items-container');
-            container.innerHTML = '';
+        // Current gallery data
+        let currentData = [];
+        
+        // Load data from data.js if available
+        async function loadFromCurrent() {
+            try {
+                const response = await fetch('data.js');
+                const jsContent = await response.text();
+                
+                // Extract galleryData from the JavaScript file
+                const match = jsContent.match(/const galleryData = (\[.*?\];)/s);
+                if (match) {
+                    // Clean and parse the data
+                    const dataStr = match[1].replace(/;\s*$/, '');
+                    currentData = eval(`(${dataStr})`);
+                    renderItems();
+                } else {
+                    // Start with sample data if none exists
+                    currentData = getSampleData();
+                    renderItems();
+                }
+            } catch (error) {
+                console.log('Using sample data:', error);
+                currentData = getSampleData();
+                renderItems();
+            }
+        }
+        
+        // Sample data structure
+        function getSampleData() {
+            return [
+                {
+                    id: 1,
+                    type: "single",
+                    images: ["https://images.unsplash.com/photo-1579546929662-711aa81148cf?w=400&h=300"],
+                    title: "Your First Post",
+                    description: "Edit this post or add new ones",
+                    category: "photos",
+                    instagramUrl: "https://instagram.com/p/your-post",
+                    date: new Date().toISOString().split('T')[0]
+                }
+            ];
+        }
+        
+        // Render all items
+        function renderItems() {
+            const container = document.getElementById('itemsContainer');
             
-            galleryData.forEach((item, index) => {
-                container.innerHTML += `
-                    <div class="item" data-index="${index}">
-                        <h3>Item ${index + 1}</h3>
-                        <input type="text" value="${item.title}" onchange="updateItem(${index}, 'title', this.value)" placeholder="Title">
-                        <textarea onchange="updateItem(${index}, 'description', this.value)">${item.description}</textarea>
-                        <input type="text" value="${item.images.join(',')}" onchange="updateItem(${index}, 'images', this.value.split(','))" placeholder="Image URLs (comma separated)">
-                        <input type="text" value="${item.instagramUrl}" onchange="updateItem(${index}, 'instagramUrl', this.value)" placeholder="Instagram URL">
-                        <button onclick="removeItem(${index})">🗑️ Remove</button>
+            if (currentData.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:40px; color:#666;">
+                        <h3>No posts yet</h3>
+                        <p>Click "Add New Post" to get started!</p>
                     </div>
                 `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            currentData.forEach((item, index) => {
+                const itemHTML = `
+                    <div class="item-card" data-index="${index}">
+                        <div class="item-header">
+                            <div class="item-number">Post ${index + 1}</div>
+                            <button class="btn btn-small btn-danger" onclick="deleteItem(${index})">🗑️ Delete</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Post Title:</label>
+                            <input type="text" value="${item.title}" 
+                                   oninput="updateItem(${index}, 'title', this.value)"
+                                   placeholder="Enter post title">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea oninput="updateItem(${index}, 'description', this.value)"
+                                      placeholder="Enter description">${item.description}</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Image URLs (one per line):</label>
+                            <textarea oninput="updateItem(${index}, 'images', this.value.split('\\n').filter(url => url.trim()))"
+                                      placeholder="https://example.com/image1.jpg
+https://example.com/image2.jpg">${Array.isArray(item.images) ? item.images.join('\n') : item.images}</textarea>
+                            <small style="color:#666;">For multiple images (slider), add each URL on a new line</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Instagram Post URL:</label>
+                            <input type="text" value="${item.instagramUrl || ''}" 
+                                   oninput="updateItem(${index}, 'instagramUrl', this.value)"
+                                   placeholder="https://instagram.com/p/...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Post Type:</label>
+                            <select onchange="updateItem(${index}, 'type', this.value)">
+                                <option value="single" ${item.type === 'single' ? 'selected' : ''}>Single Image</option>
+                                <option value="slider" ${item.type === 'slider' ? 'selected' : ''}>Slider (Multiple Images)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Date:</label>
+                            <input type="date" value="${item.date}" 
+                                   oninput="updateItem(${index}, 'date', this.value)">
+                        </div>
+                    </div>
+                `;
+                
+                container.innerHTML += itemHTML;
             });
         }
         
-        // Update item
+        // Update an item
         function updateItem(index, field, value) {
-            galleryData[index][field] = value;
+            if (currentData[index]) {
+                currentData[index][field] = value;
+            }
         }
         
         // Add new item
         function addNewItem() {
-            galleryData.push({
-                id: galleryData.length + 1,
+            const newId = currentData.length > 0 ? Math.max(...currentData.map(item => item.id)) + 1 : 1;
+            
+            currentData.push({
+                id: newId,
                 type: "single",
                 images: [""],
-                title: "New Post",
-                description: "Description here",
+                title: "New Post Title",
+                description: "Post description here",
                 category: "photos",
                 instagramUrl: "",
                 date: new Date().toISOString().split('T')[0]
             });
-            loadItems();
+            
+            renderItems();
+            scrollToBottom();
         }
         
-        // Remove item
-        function removeItem(index) {
-            if(confirm("Delete this post?")) {
-                galleryData.splice(index, 1);
-                loadItems();
+        // Delete item
+        function deleteItem(index) {
+            if (confirm("Delete this post? This action cannot be undone.")) {
+                currentData.splice(index, 1);
+                renderItems();
             }
         }
         
-        // Save to GitHub
-        function saveAll() {
-            const code = `const galleryData = ${JSON.stringify(galleryData, null, 4)};`;
+        // Generate JavaScript code for data.js
+        function generateCode() {
+            // Clean the data
+            const cleanData = currentData.map(item => ({
+                id: item.id || currentData.indexOf(item) + 1,
+                type: item.type || "single",
+                images: Array.isArray(item.images) ? item.images.filter(url => url.trim()) : [item.images || ""].filter(url => url.trim()),
+                title: item.title || "Untitled",
+                description: item.description || "",
+                category: item.category || "photos",
+                instagramUrl: item.instagramUrl || "",
+                date: item.date || new Date().toISOString().split('T')[0]
+            }));
             
-            // Show code to copy
-            prompt("Copy this code and REPLACE data.js file on GitHub:", code);
+            const jsCode = `// FILE: data.js - Your Gallery Database
+// Generated on ${new Date().toLocaleDateString()}
+// Edit this file or use admin-edit.html to update
+
+const galleryData = ${JSON.stringify(cleanData, null, 4)};`;
             
-            alert("1. Copy the code above\n2. Go to GitHub → data.js\n3. Replace ALL code\n4. Commit changes\n5. Refresh gallery page in 1 minute");
+            const output = document.getElementById('codeOutput');
+            output.innerHTML = `<h3>📋 Copy This Code:</h3>
+            <p>1. Copy ALL code below<br>
+               2. Go to <a href="https://github.com/shubhamkaushik2/shubhamkaushik/blob/main/data.js" target="_blank">GitHub data.js</a><br>
+               3. Replace ALL existing code<br>
+               4. Commit changes</p>
+            <textarea id="codeTextArea" style="width:100%; height:300px; font-family:monospace; padding:10px; border-radius:5px; border:2px solid #444; background:#2d2d2d; color:#f8f8f2;">${jsCode}</textarea>
+            <button class="btn" onclick="copyCode()" style="margin-top:10px;">📋 Copy to Clipboard</button>`;
+            
+            output.style.display = 'block';
+            output.scrollIntoView({ behavior: 'smooth' });
         }
         
-        // Initial load
-        loadItems();
+        // Copy code to clipboard
+        function copyCode() {
+            const textarea = document.getElementById('codeTextArea');
+            textarea.select();
+            document.execCommand('copy');
+            alert('Code copied to clipboard! Now paste it into data.js on GitHub.');
+        }
+        
+        // Scroll to bottom
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadFromCurrent);
     </script>
 </body>
 </html>
